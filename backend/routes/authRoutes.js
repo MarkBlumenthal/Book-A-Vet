@@ -1,0 +1,20 @@
+// backend/routes/authRoutes.js
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const adminModel = require('../models/adminModel');
+const config = require('../config');
+
+const router = express.Router();
+
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const admin = await adminModel.getAdminByUsername(username);
+  if (!admin || !await bcrypt.compare(password, admin.password)) {
+    return res.status(401).send('Invalid credentials');
+  }
+  const token = jwt.sign({ id: admin.id }, config.SECRET_KEY);
+  res.send({ token });
+});
+
+module.exports = router;
