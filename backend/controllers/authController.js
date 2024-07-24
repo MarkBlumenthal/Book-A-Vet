@@ -10,10 +10,11 @@ const login = async (req, res) => {
   if (!admin || !await bcrypt.compare(password, admin.password)) {
     return res.status(401).send('Invalid credentials');
   }
-  const token = jwt.sign({ id: admin.id }, config.SECRET_KEY);
+  const token = jwt.sign({ id: admin.id }, process.env.SECRET_KEY, { expiresIn: '1h' });
   res.send({ token });
 };
 
 module.exports = {
   login,
 };
+
