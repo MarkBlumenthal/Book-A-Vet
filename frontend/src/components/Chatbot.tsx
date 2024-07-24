@@ -21,8 +21,18 @@ const Chatbot: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    await axios.post('http://localhost:5000/appointments', appointment);
-    alert('Appointment booked successfully');
+    if (!appointment.petName || !appointment.ownerEmail || !appointment.checkupType || !appointment.date || !appointment.time) {
+      alert('All fields are required.');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:5000/appointments', appointment);
+      alert('Appointment booked successfully');
+    } catch (error) {
+      console.error('Error booking appointment:', error);
+      alert('Failed to book appointment');
+    }
   };
 
   return (
@@ -61,3 +71,6 @@ const Chatbot: React.FC = () => {
 };
 
 export default Chatbot;
+
+
+
