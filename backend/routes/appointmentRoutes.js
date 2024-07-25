@@ -5,8 +5,7 @@ const appointmentModel = require('../models/appointmentModel');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const userId = 1;  // Assuming a fixed user ID for now, replace with actual user ID logic.
-  const appointment = { ...req.body, userId };
+  const appointment = req.body;
   console.log("Received appointment data:", appointment);
   try {
     const newAppointment = await appointmentModel.createAppointment(appointment);
@@ -41,5 +40,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
